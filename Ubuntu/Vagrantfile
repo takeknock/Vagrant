@@ -4,23 +4,23 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
-  config.vm.box = "https://cloud-images.ubuntu.com/vagrant/utopic/current/utopic-server-cloudimg-amd64-vagrant-disk1.box"
+  config.vm.box = "UbuntuServer15.04"
 
-  config.vm.communicator = "winrm"
-  config.vm.network :forwarded_port, guest: 3389, host: 13389
-  config.vm.network :forwarded_port, guest: 5985, host: 15985, id: "winrm", auto_correct: true
-
+  # config.vm.communicator = "winrm"
+  # config.vm.network :forwarded_port, guest: 3389, host: 13389
+  # config.vm.network :forwarded_port, guest: 5985, host: 15985, id: "winrm", auto_correct: true
+  config.vm.synced_folder "D:/Store", "/home/vagrant/Store", type: "nfs"
   # multi machine setting
   config.vm.define :vagrant0 do |vagrant|
     # get scripts which makes winrm effective
-    Invoke-WebRequest -Uri https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1 -OutFile ConfigureRemotingForAnsible.ps1
-    Set-NetConnectionProfile -InterfaceAlias (Get-NetConnectionProfile -IPv4Connectivity Internet).InterfaceAlias -NetworkCategory Private
+    #Invoke-WebRequest -Uri https://raw.githubusercontent.com/ansible/ansible/devel/examples/scripts/ConfigureRemotingForAnsible.ps1 -OutFile ConfigureRemotingForAnsible.ps1
+    #Set-NetConnectionProfile -InterfaceAlias (Get-NetConnectionProfile -IPv4Connectivity Internet).InterfaceAlias -NetworkCategory Private
     # confirm that NetworkCategory is private
-    Get-NetConnectionProfile -IPv4Connectivity Internet
+    #Get-NetConnectionProfile -IPv4Connectivity Internet
   end
 
-  config.vm.define :vagrant1 do |vagrant|
-  end
+  #config.vm.define :vagrant1 do |vagrant|
+  #end
 
   config.vm.provider "virtualbox" do |vb|
     # Display the VirtualBox GUI when booting the machine
