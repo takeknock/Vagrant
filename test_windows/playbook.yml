@@ -1,0 +1,8 @@
+- hosts: All
+  become: true
+  tasks:
+    - name: create directory
+      file:
+        path: C:\ansibletest
+        owner: ansibletest
+        mode: 0755
